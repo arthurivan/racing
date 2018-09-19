@@ -8,26 +8,26 @@
 	<canvas id="gameCanvas" width="800" height="600"></canvas>
 	<script>
 		var canvas, cx;
-		//ball
-		var ballX = 400;
-		var ballY = 300;
-		var ballXSpeed = 0;
-		var ballYSpeed = 7;
-		var ballRadius = 10;
+		//car
+		var carX = 400;
+		var carY = 300;
+		var carXSpeed = 0;
+		var carYSpeed = 7;
+		var carRadius = 10;
 
 		//track wall
 		const TRACK_W = 40;
 		const TRACK_H = 40;
-		const TRACK_GAP = 2;
-		const TRACK_COLS = 10;
-		const TRACK_ROWS = 11;
+		const TRACK_GAP = 1;
+		const TRACK_COLS = 20;
+		const TRACK_ROWS = 15;
 		var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
-		var level = 1;
+		var level =0;
 
 	
 
 		function resetTracks() {
-			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
+			/*			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
 				if ((i < TRACK_COLS * 3) ||
 					  (i%TRACK_COLS == 0) ||
 					  (i%TRACK_COLS == 9) ||
@@ -37,7 +37,10 @@
 					trackGrid[i] = 1;
 				}
 			}
-			level++;
+			level++;*/
+			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
+				trackGrid[i] = 1;
+			}
 		}
 
 		function trackTileToIndex(tileCol, tileRow) {
@@ -64,15 +67,15 @@
 			}, 1000/framesPerSec);
 		}
 
-		function ballReset() {
-			ballX = canvas.width/2;
-			ballY = canvas.height/2;
-			ballXSpeed = 0;
+		function carReset() {
+			carX = canvas.width/2;
+			carY = canvas.height/2;
+			carXSpeed = 0;
 		}
 
-		function breakAndBounceOffTrackAtPixelCoord(ballX,ballY) {
-			var trackTileCol = Math.floor(ballX/TRACK_W);
-			var trackTileRow = Math.floor(ballY/TRACK_H);
+		function breakAndBounceOffTrackAtPixelCoord(carX,carY) {
+			var trackTileCol = Math.floor(carX/TRACK_W);
+			var trackTileRow = Math.floor(carY/TRACK_H);
 			//return if not a valid tile value
 	    if (trackTileCol < 0 ||
 		    	trackTileCol >= TRACK_COLS ||
@@ -83,17 +86,17 @@
 			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
 			if (trackGrid[trackIndex] == 1) {
 				console.log(trackTileCol, trackTileRow);
-				var prevBallX = ballX - ballXSpeed;
-				var prevBallY = ballY - ballYSpeed;
+				var prevCarX = carX - carXSpeed;
+				var prevCarY = carY - carYSpeed;
 
-				var prevTrackTileCol = Math.floor(prevBallX/TRACK_W);
-				var prevTrackTileRow = Math.floor(prevBallY/TRACK_H);
+				var prevTrackTileCol = Math.floor(prevCarX/TRACK_W);
+				var prevTrackTileRow = Math.floor(prevCarY/TRACK_H);
 
 				var bothTestsFailed = true;
 				if (prevTrackTileCol != trackTileCol) {
 					var adjTrackIndex = trackTileToIndex(prevTrackTileCol, trackTileRow);
 					if (trackGrid[adjTrackIndex] != 1) {
-						ballXSpeed *= -1;
+						carXSpeed *= -1;
 						bothTestsFailed = false;
 					}
 				}
@@ -101,14 +104,14 @@
 				if (prevTrackTileRow != trackTileRow) {
 					var adjTrackIndex = trackTileToIndex(trackTileCol, prevTrackTileRow);
 					if (trackGrid[adjTrackIndex] != 1) {
-						ballYSpeed *= -1;
+						carYSpeed *= -1;
 						bothTestsFailed = false;
 					}
 				}
 
 				if (bothTestsFailed) {
-					ballXSpeed *= -1;
-					ballYSpeed *= -1;
+					carXSpeed *= -1;
+					carYSpeed *= -1;
 				}
 				trackGrid[trackIndex] = 0;
 			}
@@ -116,23 +119,23 @@
 
 		function moveEverything() {
 			//bounce off right and left edge
-			if (ballX > canvas.width ||
-				  ballX < 0) {
-				ballXSpeed *= -1;
+			if (carX > canvas.width ||
+				  carX < 0) {
+				carXSpeed *= -1;
 			}
 			//bounce off top
-			if (ballY < 0) {
-				ballYSpeed *= -1;
+			if (carY < 0) {
+				carYSpeed *= -1;
 			}
-			if (ballY > canvas.height) {
-				ballReset();
+			if (carY > canvas.height) {
+				carReset();
 			}
-			resetTracks();
+			
 			//track zone
-			breakAndBounceOffTrackAtPixelCoord(ballX, ballY);
+			breakAndBounceOffTrackAtPixelCoord(carX, carY);
 
-			ballX += ballXSpeed;
-			ballY += ballYSpeed;
+			carX += carXSpeed;
+			carY += carYSpeed;
 			
 		}
 
@@ -166,8 +169,8 @@
 			//Tracks
 			drawTracks();
 
-			//ball
-			colorCircle(ballX,ballY, ballRadius, 'white');
+			//car
+			colorCircle(carX,carY, carRadius, 'white');
 
 		}
 	</script>
