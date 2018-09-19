@@ -15,58 +15,38 @@
 		var ballYSpeed = 7;
 		var ballRadius = 10;
 
-		//paddle
-		var paddleX = 350;
-		var paddleY = 540;
-		const PADDLE_WIDTH = 100;
-		const PADDLE_HEIGHT = 10;
-
-		//brick wall
-		const BRICK_W = 80;
-		const BRICK_H = 20;
-		const BRICK_GAP = 2;
-		const BRICK_COLS = 10;
-		const BRICK_ROWS = 11;
-		var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+		//track wall
+		const TRACK_W = 80;
+		const TRACK_H = 20;
+		const TRACK_GAP = 2;
+		const TRACK_COLS = 10;
+		const TRACK_ROWS = 11;
+		var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
 		var level = 1;
 
-		function calculateMousePos(evt) {
-			//gets the borders of canvas
-			var rect = canvas.getBoundingClientRect();
-			//gets the document
-			var root = document.documentElement;
+	
 
-			//place clicked - canvas pos - any scrolling
- 			var mouseX = evt.clientX - rect.left - root.scrollLeft;
-			var mouseY = evt.clientY - rect.top - root.scrollTop;
-
-			return {
-				x: mouseX,
-				y: mouseY
-			}
-		}
-
-		function resetBricks() {
-			for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
-				if ((i < BRICK_COLS * 3) ||
-					  (i%BRICK_COLS == 0) ||
-					  (i%BRICK_COLS == 9) ||
+		function resetTracks() {
+			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
+				if ((i < TRACK_COLS * 3) ||
+					  (i%TRACK_COLS == 0) ||
+					  (i%TRACK_COLS == 9) ||
 					  (i%level == 0)) {
-					brickGrid[i] = 0;
+					trackGrid[i] = 0;
 				} else {
-					brickGrid[i] = 1;
+					trackGrid[i] = 1;
 				}
 			}
 			level++;
 		}
 
-		function brickTileToIndex(tileCol, tileRow) {
-			return tileCol + tileRow*BRICK_COLS;
+		function trackTileToIndex(tileCol, tileRow) {
+			return tileCol + tileRow*TRACK_COLS;
 		}
 
-		function isBrickAtTileCoord(brickTileCol, brickTileRow) {
-			var brickIndex = brickTileToIndex(brickTileCol,brickTileRow);
-			return (brickGrid[brickIndex] == 1);
+		function isTrackAtTileCoord(trackTileCol, trackTileRow) {
+			var trackIndex = trackTileToIndex(trackTileCol,trackTileRow);
+			return (trackGrid[trackIndex] == 1);
 		}
 
 		window.onload = function() {
@@ -74,15 +54,8 @@
 			canvas = document.getElementById('gameCanvas');
 			cx = canvas.getContext('2d');
 
-			resetBricks();
+			resetTracks();
 
-			canvas.addEventListener('mousemove', function(evt) {
-				var mousePos = calculateMousePos(evt);
-				paddleX = mousePos.x - (PADDLE_WIDTH/2);
-				/*				for testing
-				ballX = mousePos.x;
-				ballY = mousePos.y;*/
-			})
 
 			var framesPerSec = 30;
 			setInterval(function() {
@@ -97,37 +70,37 @@
 			ballXSpeed = 0;
 		}
 
-		function breakAndBounceOffBrickAtPixelCoord(ballX,ballY) {
-			var brickTileCol = Math.floor(ballX/BRICK_W);
-			var brickTileRow = Math.floor(ballY/BRICK_H);
+		function breakAndBounceOffTrackAtPixelCoord(ballX,ballY) {
+			var trackTileCol = Math.floor(ballX/TRACK_W);
+			var trackTileRow = Math.floor(ballY/TRACK_H);
 			//return if not a valid tile value
-	    if (brickTileCol < 0 ||
-		    	brickTileCol >= BRICK_COLS ||
-	        brickTileRow < 0 ||
-	        brickTileRow >= BRICK_ROWS) {
+	    if (trackTileCol < 0 ||
+		    	trackTileCol >= TRACK_COLS ||
+	        trackTileRow < 0 ||
+	        trackTileRow >= TRACK_ROWS) {
 	    	return;
 	    }
-			var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
-			if (brickGrid[brickIndex] == 1) {
-				console.log(brickTileCol, brickTileRow);
+			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
+			if (trackGrid[trackIndex] == 1) {
+				console.log(trackTileCol, trackTileRow);
 				var prevBallX = ballX - ballXSpeed;
 				var prevBallY = ballY - ballYSpeed;
 
-				var prevBrickTileCol = Math.floor(prevBallX/BRICK_W);
-				var prevBrickTileRow = Math.floor(prevBallY/BRICK_H);
+				var prevTrackTileCol = Math.floor(prevBallX/TRACK_W);
+				var prevTrackTileRow = Math.floor(prevBallY/TRACK_H);
 
 				var bothTestsFailed = true;
-				if (prevBrickTileCol != brickTileCol) {
-					var adjBrickIndex = brickTileToIndex(prevBrickTileCol, brickTileRow);
-					if (brickGrid[adjBrickIndex] != 1) {
+				if (prevTrackTileCol != trackTileCol) {
+					var adjTrackIndex = trackTileToIndex(prevTrackTileCol, trackTileRow);
+					if (trackGrid[adjTrackIndex] != 1) {
 						ballXSpeed *= -1;
 						bothTestsFailed = false;
 					}
 				}
 
-				if (prevBrickTileRow != brickTileRow) {
-					var adjBrickIndex = brickTileToIndex(brickTileCol, prevBrickTileRow);
-					if (brickGrid[adjBrickIndex] != 1) {
+				if (prevTrackTileRow != trackTileRow) {
+					var adjTrackIndex = trackTileToIndex(trackTileCol, prevTrackTileRow);
+					if (trackGrid[adjTrackIndex] != 1) {
 						ballYSpeed *= -1;
 						bothTestsFailed = false;
 					}
@@ -137,7 +110,7 @@
 					ballXSpeed *= -1;
 					ballYSpeed *= -1;
 				}
-				brickGrid[brickIndex] = 0;
+				trackGrid[trackIndex] = 0;
 			}
 		}
 
@@ -154,24 +127,9 @@
 			if (ballY > canvas.height) {
 				ballReset();
 			}
-			//bounce off paddle
-			if (ballYSpeed > 0) {
-				if (ballX + ballRadius > paddleX &&
-					  ballX - ballRadius < paddleX + PADDLE_WIDTH &&
-					  ballY + ballRadius > paddleY &&
-					  ballY - ballRadius < paddleY + PADDLE_HEIGHT) {
-					var paddleCenter = paddleX + (PADDLE_WIDTH/2);
-					ballXSpeed = (ballX - paddleCenter) * .20;
-					ballYSpeed *= -1;
-					if (!brickGrid.reduce(function(cur, next) {
-						return Math.max(cur,next);
-					})) {
-						resetBricks();
-					}
-				}
-			}
-			//brick zone
-			breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
+
+			//track zone
+			breakAndBounceOffTrackAtPixelCoord(ballX, ballY);
 
 			ballX += ballXSpeed;
 			ballY += ballYSpeed;
@@ -191,11 +149,11 @@
 			cx.fillRect(topLeftX,topLeftY, width,height);
 		}
 
-		function drawBricks() {
-			for (var i = 0; i < BRICK_ROWS; i++) {
-				for (var j = 0; j < BRICK_COLS; j++) {
-					if (isBrickAtTileCoord(j,i)){
-						colorRect(j*BRICK_W,i*BRICK_H, BRICK_W - BRICK_GAP,BRICK_H - BRICK_GAP, 'blue');
+		function drawTracks() {
+			for (var i = 0; i < TRACK_ROWS; i++) {
+				for (var j = 0; j < TRACK_COLS; j++) {
+					if (isTrackAtTileCoord(j,i)){
+						colorRect(j*TRACK_W,i*TRACK_H, TRACK_W - TRACK_GAP,TRACK_H - TRACK_GAP, 'blue');
 					}
 				}
 			}
@@ -205,14 +163,12 @@
 			//background
 			colorRect(0,0, canvas.width,canvas.height, 'black');
 
-			//bricks
-			drawBricks();
+			//Tracks
+			drawTracks();
 
 			//ball
 			colorCircle(ballX,ballY, ballRadius, 'white');
 
-			//paddle
-			colorRect(paddleX,paddleY, PADDLE_WIDTH,PADDLE_HEIGHT, 'white');
 		}
 	</script>
 </body>
