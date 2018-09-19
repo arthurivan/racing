@@ -16,8 +16,8 @@
 		var ballRadius = 10;
 
 		//track wall
-		const TRACK_W = 80;
-		const TRACK_H = 20;
+		const TRACK_W = 40;
+		const TRACK_H = 40;
 		const TRACK_GAP = 2;
 		const TRACK_COLS = 10;
 		const TRACK_ROWS = 11;
@@ -127,7 +127,7 @@
 			if (ballY > canvas.height) {
 				ballReset();
 			}
-
+			resetTracks();
 			//track zone
 			breakAndBounceOffTrackAtPixelCoord(ballX, ballY);
 
