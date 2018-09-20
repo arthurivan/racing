@@ -63,7 +63,7 @@
 			carPic.onload = function() {
 				carPicLoaded = true;
 			}
-			carPic.src="images/police-car-top.png";
+			carPic.src="images/white-car.png";
 		}
 
 		function carReset() {
@@ -139,7 +139,7 @@
 
 		function carDraw() {
 			if(carPicLoaded) {
-				cx.drawImage(carPic, carX-carPic.width/2, carY-carPic.height/2);
+				cx.drawImage(carPic, carX-15, carY-15,30,30);
 			}
 		}
 
