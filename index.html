@@ -11,11 +11,14 @@
 		//car
 		var carX = 400;
 		var carY = 300;
+		var carW = 30;
+		var carH = 16;
 		var carXSpeed = 5;
 		var carYSpeed = 7;
 		var carRadius = 10;
 		var carPic = document.createElement('img');
 		var carPicLoaded = false;
+		var carAng = 0.02;
 
 		//track wall
 		const TRACK_W = 40;
@@ -24,29 +27,32 @@
 		const TRACK_COLS = 20;
 		const TRACK_ROWS = 15;
 		var trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-           1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-           1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-           1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
-           1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-           1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
-           1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-           1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-           1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-           1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-           1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-           1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-           1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
-           1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+					            1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+					            1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+					            1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+					            1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+					            1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
+					            1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+					            1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+					            1, 2, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+					            1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+					            1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+					            1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+					            1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+					            1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+					            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 		function trackTileToIndex(tileCol, tileRow) {
 			return tileCol + tileRow*TRACK_COLS;
 		}
 
-		function isTrackAtTileCoord(trackTileCol, trackTileRow) {
-			var trackIndex = trackTileToIndex(trackTileCol,trackTileRow);
-			return (trackGrid[trackIndex] == 1);
-		}
+/*		function updateMousePos(evt) {
+			var rect = canvas.getBoundingClientRect();
+			var root = document.documentElement;
+
+			mouseX = evt.clientX - rect.left - root.scrollLeft;
+			mouseY = evt.clientY - rect.top - root.scrollTop;
+		}*/
 
 		window.onload = function() {
 			
@@ -67,9 +73,18 @@
 		}
 
 		function carReset() {
-			carX = canvas.width/2 + 50;
-			carY = canvas.height/2;
-			//carXSpeed = 0;
+
+			//search for location in grid
+			for (var eachRow = 0; eachRow < TRACK_ROWS;eachRow++) {
+				for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
+					var arrayIndex = trackTileToIndex(eachCol, eachRow);
+					if (trackGrid[arrayIndex] == 2) {
+						trackGrid[arrayIndex] = 0;
+						carX = eachCol * TRACK_W + TRACK_W/2;
+						carY = eachRow * TRACK_H + TRACK_H/2;
+					}
+				}
+			}
 		}
 
 		function bounceOffTrackAtPixelCoord(carX,carY) {
@@ -117,7 +132,8 @@
 
 		function moveEverything() {
 			//bounce off right and left edge
-			if (carX > canvas.width ||
+
+/*			if (carX > canvas.width ||
 				  carX < 0) {
 				carXSpeed *= -1;
 			}
@@ -127,20 +143,35 @@
 			}
 			if (carY > canvas.height) {
 				carReset();
-			}
+			}*/
 			
 			//track zone
 			bounceOffTrackAtPixelCoord(carX, carY);
 
 			carX += carXSpeed;
 			carY += carYSpeed;
+			carAng += 0.02;
 			
 		}
 
 		function carDraw() {
 			if(carPicLoaded) {
-				cx.drawImage(carPic, carX-15, carY-15,30,30);
+				//cx.save();
+				//cx.translate(carX, carY);
+				//cx.rotate(carAng);
+				drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
+				//cx.restore();
+				//carAng+= .2;
 			}
+		}
+
+		function drawBitmapCenteredWithRotation(carPic, atX, atY, ang) {
+			cx.save();
+			cx.translate(atX, atY);
+			cx.rotate(ang);
+			cx.drawImage(carPic, -(carW/2), -(carH/2), carW, carH);
+			cx.restore();
+			
 		}
 
 		function colorRect(topLeftX,topLeftY, width,height, color) {
@@ -152,7 +183,8 @@
 		function drawTracks() {
 			for (var i = 0; i < TRACK_ROWS; i++) {
 				for (var j = 0; j < TRACK_COLS; j++) {
-					if (isTrackAtTileCoord(j,i)){
+					var arrayIndex = trackTileToIndex(j,i);
+					if (trackGrid[arrayIndex] == 1){
 						colorRect(j*TRACK_W,i*TRACK_H, TRACK_W - TRACK_GAP,TRACK_H - TRACK_GAP, 'blue');
 					}
 				}
