@@ -12,7 +12,7 @@
 		var carX = 400;
 		var carY = 300;
 		var carW = 30;
-		var carH = 16;
+		var carH = 25;
 		var carXSpeed = 5;
 		var carYSpeed = 7;
 		var carRadius = 10;
@@ -165,11 +165,11 @@
 			}
 		}
 
-		function drawBitmapCenteredWithRotation(carPic, atX, atY, ang) {
+		function drawBitmapCenteredWithRotation(graphic, atX, atY, withAngle) {
 			cx.save();
 			cx.translate(atX, atY);
-			cx.rotate(ang);
-			cx.drawImage(carPic, -(carW/2), -(carH/2), carW, carH);
+			cx.rotate(withAngle);
+			cx.drawImage(graphic, -(carW/2), -(carH/2), carW, carH);
 			cx.restore();
 			
 		}
