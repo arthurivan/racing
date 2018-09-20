@@ -14,6 +14,8 @@
 		var carXSpeed = 5;
 		var carYSpeed = 7;
 		var carRadius = 10;
+		var carPic = document.createElement('img');
+		var carPicLoaded = false;
 
 		//track wall
 		const TRACK_W = 40;
@@ -57,6 +59,11 @@
 				moveEverything();
 				drawEverything();
 			}, 1000/framesPerSec);
+
+			carPic.onload = function() {
+				carPicLoaded = true;
+			}
+			carPic.src="https://www.freeiconspng.com/uploads/police-car-top-png-11.png";
 		}
 
 		function carReset() {
@@ -130,8 +137,10 @@
 			
 		}
 
-		function colorCircle(centerX,centerY, size, color) {
-			cx.fillStyle = color;
+		function colorCircle() {
+			if(carPicLoaded) {
+				cx.drawImage(carPic, carX-carPic.width/2, carY-carPic.height/2);
+			}
 			cx.beginPath();
 			cx.arc(centerX,centerY, size, 0,7);
 			cx.fill();
@@ -161,7 +170,7 @@
 			drawTracks();
 
 			//car
-			colorCircle(carX,carY, carRadius, 'white');
+			carDraw();
 
 		}
 	</script>
