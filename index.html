@@ -6,6 +6,7 @@
 </head>
 <body>
 	<canvas id="gameCanvas" width="800" height="600"></canvas>
+	<p id="debugText">output</p>
 	<script>
 		var canvas, cx;
 		//car
@@ -54,6 +55,18 @@
 			mouseY = evt.clientY - rect.top - root.scrollTop;
 		}*/
 
+		function keyPressed(evt) {
+			evt.preventDefault;
+			var pEl = document.getElementById('debugText');
+			pEl.innerHTML = "Keycode pressed: " + evt.keyCode;
+		}
+
+		function keyReleased(evt) {
+			evt.preventDefault;
+			var pEl = document.getElementById('debugText');
+			pEl.innerHTML = "Keycode released: " + evt.keyCode;
+		}
+
 		window.onload = function() {
 			
 			canvas = document.getElementById('gameCanvas');
@@ -65,6 +78,9 @@
 				moveEverything();
 				drawEverything();
 			}, 1000/framesPerSec);
+
+			document.addEventListener('keydown',keyPressed);
+			document.addEventListener('keyup', keyReleased);
 
 			carPic.onload = function() {
 				carPicLoaded = true;
