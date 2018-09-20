@@ -11,7 +11,7 @@
 		//car
 		var carX = 400;
 		var carY = 300;
-		var carXSpeed = 0;
+		var carXSpeed = 5;
 		var carYSpeed = 7;
 		var carRadius = 10;
 
@@ -21,27 +21,21 @@
 		const TRACK_GAP = 1;
 		const TRACK_COLS = 20;
 		const TRACK_ROWS = 15;
-		var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
-		var level =0;
-
-	
-
-		function resetTracks() {
-			/*			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
-				if ((i < TRACK_COLS * 3) ||
-					  (i%TRACK_COLS == 0) ||
-					  (i%TRACK_COLS == 9) ||
-					  (i%level == 0)) {
-					trackGrid[i] = 0;
-				} else {
-					trackGrid[i] = 1;
-				}
-			}
-			level++;*/
-			for (var i = 0; i < TRACK_COLS * TRACK_ROWS; i++) {
-				trackGrid[i] = 1;
-			}
-		}
+		var trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+           1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+           1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+           1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+           1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+           1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
+           1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+           1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+           1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+           1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+           1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+           1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+           1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+           1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 		function trackTileToIndex(tileCol, tileRow) {
 			return tileCol + tileRow*TRACK_COLS;
@@ -57,9 +51,7 @@
 			canvas = document.getElementById('gameCanvas');
 			cx = canvas.getContext('2d');
 
-			resetTracks();
-
-
+			carReset();
 			var framesPerSec = 30;
 			setInterval(function() {
 				moveEverything();
@@ -68,12 +60,12 @@
 		}
 
 		function carReset() {
-			carX = canvas.width/2;
+			carX = canvas.width/2 + 50;
 			carY = canvas.height/2;
-			carXSpeed = 0;
+			//carXSpeed = 0;
 		}
 
-		function breakAndBounceOffTrackAtPixelCoord(carX,carY) {
+		function bounceOffTrackAtPixelCoord(carX,carY) {
 			var trackTileCol = Math.floor(carX/TRACK_W);
 			var trackTileRow = Math.floor(carY/TRACK_H);
 			//return if not a valid tile value
@@ -85,7 +77,6 @@
 	    }
 			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
 			if (trackGrid[trackIndex] == 1) {
-				console.log(trackTileCol, trackTileRow);
 				var prevCarX = carX - carXSpeed;
 				var prevCarY = carY - carYSpeed;
 
@@ -113,7 +104,7 @@
 					carXSpeed *= -1;
 					carYSpeed *= -1;
 				}
-				trackGrid[trackIndex] = 0;
+				//trackGrid[trackIndex] = 0;
 			}
 		}
 
@@ -132,7 +123,7 @@
 			}
 			
 			//track zone
-			breakAndBounceOffTrackAtPixelCoord(carX, carY);
+			bounceOffTrackAtPixelCoord(carX, carY);
 
 			carX += carXSpeed;
 			carY += carYSpeed;
