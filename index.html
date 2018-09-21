@@ -14,12 +14,11 @@
 		var carY = 300;
 		var carW = 30;
 		var carH = 25;
-		var carXSpeed = 5;
-		var carYSpeed = 7;
+		var carSpeed = 5;
 		var carRadius = 10;
 		var carPic = document.createElement('img');
 		var carPicLoaded = false;
-		var carAng = 0.02;
+		var carAng = 0;
 
 		//track wall
 		const TRACK_W = 40;
@@ -73,6 +72,7 @@
 			cx = canvas.getContext('2d');
 
 			carReset();
+
 			var framesPerSec = 30;
 			setInterval(function() {
 				moveEverything();
@@ -84,6 +84,7 @@
 
 			carPic.onload = function() {
 				carPicLoaded = true;
+				drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
 			}
 			carPic.src="images/white-car.png";
 		}
@@ -106,78 +107,25 @@
 		function bounceOffTrackAtPixelCoord(carX,carY) {
 			var trackTileCol = Math.floor(carX/TRACK_W);
 			var trackTileRow = Math.floor(carY/TRACK_H);
-			//return if not a valid tile value
-	    if (trackTileCol < 0 ||
-		    	trackTileCol >= TRACK_COLS ||
-	        trackTileRow < 0 ||
-	        trackTileRow >= TRACK_ROWS) {
-	    	return;
-	    }
+
 			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
 			if (trackGrid[trackIndex] == 1) {
-				var prevCarX = carX - carXSpeed;
-				var prevCarY = carY - carYSpeed;
-
-				var prevTrackTileCol = Math.floor(prevCarX/TRACK_W);
-				var prevTrackTileRow = Math.floor(prevCarY/TRACK_H);
-
-				var bothTestsFailed = true;
-				if (prevTrackTileCol != trackTileCol) {
-					var adjTrackIndex = trackTileToIndex(prevTrackTileCol, trackTileRow);
-					if (trackGrid[adjTrackIndex] != 1) {
-						carXSpeed *= -1;
-						bothTestsFailed = false;
-					}
-				}
-
-				if (prevTrackTileRow != trackTileRow) {
-					var adjTrackIndex = trackTileToIndex(trackTileCol, prevTrackTileRow);
-					if (trackGrid[adjTrackIndex] != 1) {
-						carYSpeed *= -1;
-						bothTestsFailed = false;
-					}
-				}
-
-				if (bothTestsFailed) {
-					carXSpeed *= -1;
-					carYSpeed *= -1;
-				}
-				//trackGrid[trackIndex] = 0;
+				carSpeed *= -1;
 			}
 		}
 
 		function moveEverything() {
-			//bounce off right and left edge
-
-/*			if (carX > canvas.width ||
-				  carX < 0) {
-				carXSpeed *= -1;
-			}
-			//bounce off top
-			if (carY < 0) {
-				carYSpeed *= -1;
-			}
-			if (carY > canvas.height) {
-				carReset();
-			}*/
-			
 			//track zone
 			bounceOffTrackAtPixelCoord(carX, carY);
-
-			carX += carXSpeed;
-			carY += carYSpeed;
+			carX += Math.cos(carAng) * carSpeed;
+			carY += Math.sin(carAng) * carSpeed;
 			carAng += 0.02;
 			
 		}
 
 		function carDraw() {
 			if(carPicLoaded) {
-				//cx.save();
-				//cx.translate(carX, carY);
-				//cx.rotate(carAng);
 				drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
-				//cx.restore();
-				//carAng+= .2;
 			}
 		}
 
