@@ -6,7 +6,6 @@
 </head>
 <body>
 	<canvas id="gameCanvas" width="800" height="600"></canvas>
-	<p id="debugText">output</p>
 	<script>
 		var canvas, cx;
 		//car
@@ -20,11 +19,11 @@
 		var carPicLoaded = false;
 		var carAng = 0;
 
-		//controls
-		const KEY_LEFT_ARROW = 37;
-		const KEY_UP_ARROW = 38;
-		const KEY_RIGHT_ARROW = 39;
-		const KEY_DOWN_ARROW = 40;
+		//control states
+		var KEY_LEFT_ARROW = false;
+		var KEY_UP_ARROW = false;
+		var KEY_RIGHT_ARROW = false;
+		var KEY_DOWN_ARROW = false;
 
 		//track wall
 		const TRACK_W = 40;
@@ -62,26 +61,23 @@
 
 		function keyPressed(evt) {
 			evt.preventDefault;
-			var pEl = document.getElementById('debugText');
-			pEl.innerHTML = "Keycode pressed: " + evt.keyCode;
+
 			switch(evt.keyCode) {
         //left
 		    case 37:
-		        carAng -= 0.05*Math.PI;
+		    		KEY_LEFT_ARROW = true;
 		        break;
 				//up
 		    case 38:
-		    		if (carSpeed < 3) {
-			        carSpeed += 1.5;
-		    		}
+		    		KEY_UP_ARROW = true;
 		        break;
         //right
         case 39:
-		        carAng += 0.05*Math.PI;
+		    		KEY_RIGHT_ARROW = true;
 		        break;
         //down
         case 40:
-		        carSpeed -= 1.5;
+		    		KEY_DOWN_ARROW = true;
 		        break;
 		    default:
 		        break;
@@ -90,8 +86,26 @@
 
 		function keyReleased(evt) {
 			evt.preventDefault;
-			var pEl = document.getElementById('debugText');
-			pEl.innerHTML = "Keycode released: " + evt.keyCode;
+			switch(evt.keyCode) {
+        //left
+		    case 37:
+		    		KEY_LEFT_ARROW = false;
+		        break;
+				//up
+		    case 38:
+		    		KEY_UP_ARROW = false;
+		        break;
+        //right
+        case 39:
+		    		KEY_RIGHT_ARROW = false;
+		        break;
+        //down
+        case 40:
+		    		KEY_DOWN_ARROW = false;
+		        break;
+		    default:
+		        break;
+			}
 		}
 
 		window.onload = function() {
@@ -138,6 +152,7 @@
 
 			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
 			if (trackGrid[trackIndex] == 1) {
+
 				carSpeed *= -1;
 			}
 		}
@@ -178,6 +193,18 @@
 		function moveEverything() {
 			//track zone
 			bounceOffTrackAtPixelCoord(carX, carY);
+			if (KEY_LEFT_ARROW) {
+				carAng -= 0.03*Math.PI;
+			}
+			if (KEY_UP_ARROW) {
+				carSpeed += 1.5;
+			}
+			if (KEY_RIGHT_ARROW) {
+				carAng += 0.03*Math.PI;
+			}
+			if (KEY_DOWN_ARROW) {
+				carSpeed -= 1.5;
+			}
 			carX += Math.cos(carAng) * carSpeed;
 			carY += Math.sin(carAng) * carSpeed;
 			//carAng += 0.02;
