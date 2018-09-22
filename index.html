@@ -14,11 +14,17 @@
 		var carY = 300;
 		var carW = 30;
 		var carH = 25;
-		var carSpeed = 5;
+		var carSpeed = 0;
 		var carRadius = 10;
 		var carPic = document.createElement('img');
 		var carPicLoaded = false;
 		var carAng = 0;
+
+		//controls
+		const KEY_LEFT_ARROW = 37;
+		const KEY_UP_ARROW = 38;
+		const KEY_RIGHT_ARROW = 39;
+		const KEY_DOWN_ARROW = 40;
 
 		//track wall
 		const TRACK_W = 40;
@@ -58,6 +64,28 @@
 			evt.preventDefault;
 			var pEl = document.getElementById('debugText');
 			pEl.innerHTML = "Keycode pressed: " + evt.keyCode;
+			switch(evt.keyCode) {
+        //left
+		    case 37:
+		        carAng -= 0.05*Math.PI;
+		        break;
+				//up
+		    case 38:
+		    		if (carSpeed < 3) {
+			        carSpeed += 1.5;
+		    		}
+		        break;
+        //right
+        case 39:
+		        carAng += 0.05*Math.PI;
+		        break;
+        //down
+        case 40:
+		        carSpeed -= 1.5;
+		        break;
+		    default:
+		        break;
+			}
 		}
 
 		function keyReleased(evt) {
@@ -114,14 +142,6 @@
 			}
 		}
 
-		function moveEverything() {
-			//track zone
-			bounceOffTrackAtPixelCoord(carX, carY);
-			carX += Math.cos(carAng) * carSpeed;
-			carY += Math.sin(carAng) * carSpeed;
-			carAng += 0.02;
-			
-		}
 
 		function carDraw() {
 			if(carPicLoaded) {
@@ -153,6 +173,15 @@
 					}
 				}
 			}
+		}
+
+		function moveEverything() {
+			//track zone
+			bounceOffTrackAtPixelCoord(carX, carY);
+			carX += Math.cos(carAng) * carSpeed;
+			carY += Math.sin(carAng) * carSpeed;
+			//carAng += 0.02;
+			
 		}
 
 		function drawEverything() {
