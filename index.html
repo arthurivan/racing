@@ -19,11 +19,17 @@
 		var carPicLoaded = false;
 		var carAng = 0;
 
+		const GROUNDSPEED_DECAY_MULT = 0.94;
+		const DRIVE_POWER = 0.5;
+		const REVERSE_POWER = 0.2;
+		const TURN_RATE = 0.03;
+		const MIN_TURN_SPEED = 0.5;
+
 		//control states
-		var KEY_LEFT_ARROW = false;
-		var KEY_UP_ARROW = false;
-		var KEY_RIGHT_ARROW = false;
-		var KEY_DOWN_ARROW = false;
+		var keyLeftArrow = false;
+		var keyUpArrow = false;
+		var keyRightArrow = false;
+		var keyDownArrow = false;
 
 		//track wall
 		const TRACK_W = 40;
@@ -59,53 +65,39 @@
 			mouseY = evt.clientY - rect.top - root.scrollTop;
 		}*/
 
-		function keyPressed(evt) {
-			evt.preventDefault;
-
-			switch(evt.keyCode) {
+		function setKeyHoldState(thisKey, setTo) {
+			switch(thisKey) {
         //left
 		    case 37:
-		    		KEY_LEFT_ARROW = true;
+		    		keyLeftArrow = setTo;
 		        break;
 				//up
 		    case 38:
-		    		KEY_UP_ARROW = true;
+		    		keyUpArrow = setTo;
 		        break;
         //right
         case 39:
-		    		KEY_RIGHT_ARROW = true;
+		    		keyRightArrow = setTo;
 		        break;
         //down
         case 40:
-		    		KEY_DOWN_ARROW = true;
+		    		keyDownArrow = setTo;
 		        break;
 		    default:
 		        break;
 			}
 		}
 
+		function keyPressed(evt) {
+			evt.preventDefault;
+
+			setKeyHoldState(evt.keyCode, true);
+			
+		}
+
 		function keyReleased(evt) {
 			evt.preventDefault;
-			switch(evt.keyCode) {
-        //left
-		    case 37:
-		    		KEY_LEFT_ARROW = false;
-		        break;
-				//up
-		    case 38:
-		    		KEY_UP_ARROW = false;
-		        break;
-        //right
-        case 39:
-		    		KEY_RIGHT_ARROW = false;
-		        break;
-        //down
-        case 40:
-		    		KEY_DOWN_ARROW = false;
-		        break;
-		    default:
-		        break;
-			}
+			setKeyHoldState(evt.keyCode, false);
 		}
 
 		window.onload = function() {
@@ -193,21 +185,27 @@
 		function moveEverything() {
 			//track zone
 			bounceOffTrackAtPixelCoord(carX, carY);
-			if (KEY_LEFT_ARROW) {
-				carAng -= 0.03*Math.PI;
+			if (keyLeftArrow) {
+				if (carSpeed > MIN_TURN_SPEED ||
+						carSpeed < -MIN_TURN_SPEED) {
+					carAng -= TURN_RATE*Math.PI;
+				}
 			}
-			if (KEY_UP_ARROW) {
-				carSpeed += 1.5;
+			if (keyUpArrow) {
+				carSpeed += DRIVE_POWER;
 			}
-			if (KEY_RIGHT_ARROW) {
-				carAng += 0.03*Math.PI;
+			if (keyRightArrow) {
+				if (carSpeed > MIN_TURN_SPEED ||
+					  carSpeed < -MIN_TURN_SPEED) {
+					carAng += TURN_RATE*Math.PI;
+				}
 			}
-			if (KEY_DOWN_ARROW) {
-				carSpeed -= 1.5;
+			if (keyDownArrow) {
+				carSpeed -= REVERSE_POWER;
 			}
 			carX += Math.cos(carAng) * carSpeed;
 			carY += Math.sin(carAng) * carSpeed;
-			//carAng += 0.02;
+			carSpeed *= GROUNDSPEED_DECAY_MULT;
 			
 		}
 
