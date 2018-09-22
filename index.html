@@ -142,16 +142,12 @@
 			}
 		}
 
-		function bounceOffTrackAtPixelCoord(carX,carY) {
+		function checkForTrackAtPixelCoord(carX,carY) {
 			var trackTileCol = Math.floor(carX/TRACK_W);
 			var trackTileRow = Math.floor(carY/TRACK_H);
 
 			var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
-			if (trackGrid[trackIndex] == TRACK_WALL) {
-				carX -= Math.cos(carAng) * carSpeed;
-				carY -= Math.sin(carAng) * carSpeed;
-				carSpeed *= -1.5;
-			}
+			return (trackGrid[trackIndex] == TRACK_ROAD);
 		}
 
 
@@ -189,7 +185,6 @@
 
 		function moveEverything() {
 			//track zone
-			bounceOffTrackAtPixelCoord(carX, carY);
 			if (keyLeftArrow) {
 				if (carSpeed > MIN_TURN_SPEED ||
 						carSpeed < -MIN_TURN_SPEED) {
@@ -211,8 +206,15 @@
 			if (keyDownArrow) {
 				carSpeed -= REVERSE_POWER;
 			}
-			carX += Math.cos(carAng) * carSpeed;
-			carY += Math.sin(carAng) * carSpeed;
+			var nextX = carX + Math.cos(carAng) * carSpeed;
+			var nextY = carY + Math.sin(carAng) * carSpeed;
+			if (checkForTrackAtPixelCoord(nextX, nextY)) {
+				carX = nextX;
+				carY = nextY;
+			} else {
+				carSpeed = 0;
+			}
+
 			carSpeed *= GROUNDSPEED_DECAY_MULT;
 			
 		}
