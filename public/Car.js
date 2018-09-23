@@ -1,4 +1,4 @@
-export function carMove() {
+export default function carMove() {
 			if (keyLeftArrow) {
 				if (carSpeed > MIN_TURN_SPEED ||
 						carSpeed < -MIN_TURN_SPEED) {
