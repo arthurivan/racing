@@ -19,12 +19,12 @@ window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	cx = canvas.getContext('2d');
 
+	initInput();
+	carInit();
 	var framesPerSec = 30;
 	setInterval(function() {
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSec);
 
-	initInput();
-	carInit();
 }
