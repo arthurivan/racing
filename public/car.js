@@ -14,6 +14,15 @@ const REVERSE_POWER = 0.2;
 const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 
+function carInit() {
+		carReset();
+		carPic.onload = function() {
+		carPicLoaded = true;
+		drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
+	}
+	carPic.src="images/white-car.png";
+}
+
 function carMove() {
 	if (keyLeftArrow) {
 		if (carSpeed > MIN_TURN_SPEED ||
@@ -44,13 +53,10 @@ function carMove() {
 	} else {
 		carSpeed *= -0.5;
 	}
-
 	carSpeed *= GROUNDSPEED_DECAY_MULT;
-	
 }
 
 function carReset() {
-
 	//search for location in grid
 	for (var eachRow = 0; eachRow < TRACK_ROWS;eachRow++) {
 		for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
@@ -63,7 +69,6 @@ function carReset() {
 		}
 	}
 }
-
 
 function carDraw() {
 	if(carPicLoaded) {
