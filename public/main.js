@@ -1,4 +1,3 @@
-import carMove from "./Car.js";
 		var canvas, cx;
 		//car
 		var carX = 400;
