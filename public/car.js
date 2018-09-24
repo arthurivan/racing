@@ -4,8 +4,7 @@ var carW = 30;
 var carH = 25;
 var carSpeed = 0;
 var carRadius = 10;
-var carPic = document.createElement('img');
-var carPicLoaded = false;
+
 var carAng = 0;
 
 const GROUNDSPEED_DECAY_MULT = 0.94;
@@ -14,14 +13,6 @@ const REVERSE_POWER = 0.2;
 const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 
-function carInit() {
-		carReset();
-		carPic.onload = function() {
-		carPicLoaded = true;
-		drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
-	}
-	carPic.src="images/white-car.png";
-}
 
 function carMove() {
 	if (keyLeftArrow) {
@@ -56,7 +47,7 @@ function carMove() {
 	carSpeed *= GROUNDSPEED_DECAY_MULT;
 }
 
-function carReset() {
+function initCar() {
 	//search for location in grid
 	for (var eachRow = 0; eachRow < TRACK_ROWS;eachRow++) {
 		for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
@@ -71,7 +62,6 @@ function carReset() {
 }
 
 function carDraw() {
-	if(carPicLoaded) {
-		drawBitmapCenteredWithRotation(carPic, carX,carY, carAng);
-	}
+
+	drawBitmapCenteredWithRotation(carPic, carX,carY, carW,carH, carAng);
 }

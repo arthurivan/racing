@@ -1,13 +1,11 @@
 var canvas, cx;
-
+var imagesToLoad =0;
 //setup
 function moveEverything() {
 	carMove();
 }
 
 function drawEverything() {
-	//background
-	colorRect(0,0, canvas.width,canvas.height, 'black');
 	//Tracks
 	drawTracks();
 	//car
@@ -20,11 +18,7 @@ window.onload = function() {
 	cx = canvas.getContext('2d');
 
 	initInput();
-	carInit();
-	var framesPerSec = 30;
-	setInterval(function() {
-		moveEverything();
-		drawEverything();
-	}, 1000/framesPerSec);
+	initCar();
+	loadImages();
 
 }
