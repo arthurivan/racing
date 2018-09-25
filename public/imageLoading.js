@@ -1,7 +1,7 @@
 var carPic = document.createElement('img');
 var trackPicRoad = document.createElement('img');
 var trackPicWall = document.createElement('img');
-var picsToLoad = 3;
+var picsToLoad = 0;
 
 function countLoadedImageAndLaunchIfReady() {
 	picsToLoad--;
@@ -10,15 +10,22 @@ function countLoadedImageAndLaunchIfReady() {
 	}
 }
 
+function beginLoadingImages(imgVar, fileName) {
+  imgVar.onload = countLoadedImageAndLaunchIfReady;
+  imgVar.src = fileName;
+}
+
 function loadImages() {
-	carPic.onload = countLoadedImageAndLaunchIfReady;
-	carPic.src="images/white-car.png";
+	var imageList = [
+		{varName: carPic, theFile: "images/white-car.png"},
+		{varName: trackPicRoad, theFile: "images/road.png"},
+		{varName: trackPicWall, theFile: "images/grass.png"},
+	];
+	picsToLoad = imageList.length;
 
-	trackPicRoad.onload = countLoadedImageAndLaunchIfReady;
-	trackPicRoad.src="images/road.png";
-
-	trackPicWall.onload = countLoadedImageAndLaunchIfReady;
-	trackPicWall.src="images/grass.png";
+	for (var i = 0; i < imageList.length; i++) {
+		beginLoadingImages(imageList[i].varName, imageList[i].theFile);
+	}
 }
 
 function loadingDoneSoStartGame() {
