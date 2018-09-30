@@ -1,6 +1,8 @@
 var carPic = document.createElement('img');
-var trackPicRoad = document.createElement('img');
-var trackPicWall = document.createElement('img');
+var treePic1 = document.createElement('img');
+var treePic2 = document.createElement('img');
+var finishLine = document.createElement('img');
+var block = document.createElement('img');
 var picsToLoad = 0;
 
 function countLoadedImageAndLaunchIfReady() {
@@ -18,8 +20,10 @@ function beginLoadingImages(imgVar, fileName) {
 function loadImages() {
 	var imageList = [
 		{varName: carPic, theFile: "images/white-car.png"},
-		{varName: trackPicRoad, theFile: "images/road.png"},
-		{varName: trackPicWall, theFile: "images/grass.png"},
+		{varName: treePic1, theFile: "images/tree1.png"},
+		{varName: treePic2, theFile: "images/tree2.png"},
+		{varName: finishLine, theFile: "images/finishLine.png"},
+		{varName: block, theFile: "images/block.png"}
 	];
 	picsToLoad = imageList.length;
 
