@@ -5,6 +5,7 @@ const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 
 function carClass() {
+	//track car position
 	this.carX = 400;
 	this.carY = 300;
 	this.carW = 30;
@@ -12,30 +13,37 @@ function carClass() {
 	this.carSpeed = 0;
 	this.carAng = 0;
 
+	//control states
+	this.keyLeft = false;
+	this.keyUp = false;
+	this.keyRight = false;
+	this.keyDown = false;
+
 	this.carMove = function() {
-		if (keyLeftArrow) {
+		if (this.keyLeft) {
 			if (this.carSpeed > MIN_TURN_SPEED ||
 					this.carSpeed < -MIN_TURN_SPEED) {
 				this.carAng -= TURN_RATE*Math.PI;
 			}
 		}
-		if (keyUpArrow) {
+		if (this.keyUp) {
 				this.carSpeed += DRIVE_POWER;
 			if (this.carSpeed < 3) {
 				
 			}
 		}
-		if (keyRightArrow) {
+		if (this.keyRight) {
 			if (this.carSpeed > MIN_TURN_SPEED ||
 				  this.carSpeed < -MIN_TURN_SPEED) {
 				this.carAng += TURN_RATE*Math.PI;
 			}
 		}
-		if (keyDownArrow) {
+		if (this.keyDown) {
 			this.carSpeed -= REVERSE_POWER;
 		}
 		var nextX = this.carX + Math.cos(this.carAng) * this.carSpeed;
 		var nextY = this.carY + Math.sin(this.carAng) * this.carSpeed;
+		
 		if (checkForTrackAtPixelCoord(nextX, nextY)) {
 			this.carX = nextX;
 			this.carY = nextY;
@@ -43,6 +51,13 @@ function carClass() {
 			this.carSpeed *= -0.5;
 		}
 		this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+	}
+
+	this.setupControls = function(leftKey, upKey, rightKey, downKey) {
+		this.controlKeyLeft = leftKey;
+		this.controlKeyUp = upKey;
+		this.controlKeyRight = rightKey;
+		this.controlKeyDown = downKey;
 	}
 
 	this.initCar = function() {
@@ -59,9 +74,10 @@ function carClass() {
 		}
 	}
 
+
 	this.carDraw = function() {
 
 		drawBitmapCenteredWithRotation(carPic, this.carX,this.carY, this.carW,this.carH, this.carAng);
 	}
-	
+
 }
