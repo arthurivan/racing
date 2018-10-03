@@ -53,7 +53,7 @@ function initCar() {
 		for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
 			var arrayIndex = trackTileToIndex(eachCol, eachRow);
 			if (trackGrid[arrayIndex] == TRACK_PLAYERSTART) {
-				trackGrid[arrayIndex] = TRACK_ROAD;
+				trackGrid[arrayIndex] = 0;
 				carX = eachCol * TRACK_W + TRACK_W/2;
 				carY = eachRow * TRACK_H + TRACK_H/2;
 			}

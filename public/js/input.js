@@ -35,7 +35,6 @@ function setKeyHoldState(thisKey, setTo) {
 function keyPressed(evt) {
 	evt.preventDefault;
 	setKeyHoldState(evt.keyCode, true);
-	console.log('h');
 }
 
 function keyReleased(evt) {

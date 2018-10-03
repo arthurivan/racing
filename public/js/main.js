@@ -1,5 +1,4 @@
 var canvas, cx;
-var imagesToLoad =0;
 //setup
 function moveEverything() {
 	carMove();

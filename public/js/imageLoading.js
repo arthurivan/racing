@@ -1,8 +1,7 @@
 var carPic = document.createElement('img');
-var treePic1 = document.createElement('img');
-var treePic2 = document.createElement('img');
-var finishLine = document.createElement('img');
-var block = document.createElement('img');
+
+var trackPics = [];
+
 var picsToLoad = 0;
 
 function countLoadedImageAndLaunchIfReady() {
@@ -10,6 +9,11 @@ function countLoadedImageAndLaunchIfReady() {
 	if (picsToLoad == 0) {
 		loadingDoneSoStartGame();
 	}
+}
+
+function loadImageForTrackCode(trackCode, fileName) {
+	trackPics[trackCode] = document.createElement('img');
+	beginLoadingImages(trackPics[trackCode], fileName);
 }
 
 function beginLoadingImages(imgVar, fileName) {
@@ -20,20 +24,28 @@ function beginLoadingImages(imgVar, fileName) {
 function loadImages() {
 	var imageList = [
 		{varName: carPic, theFile: "images/white-car.png"},
-		{varName: treePic1, theFile: "images/tree1.png"},
-		{varName: treePic2, theFile: "images/tree2.png"},
-		{varName: finishLine, theFile: "images/finishLine.png"},
-		{varName: block, theFile: "images/block.png"}
+
+		{trackType: TRACK_ROAD, theFile: "images/road.png"},
+		{trackType: TRACK_TREE1, theFile: "images/tree1.png"},
+		{trackType: TRACK_TREE2, theFile: "images/tree2.png"},
+		{trackType: TRACK_FINISHLINE, theFile: "images/finishLine.png"},
+		{trackType: TRACK_WALL, theFile: "images/block.png"}
 	];
 	picsToLoad = imageList.length;
 
 	for (var i = 0; i < imageList.length; i++) {
-		beginLoadingImages(imageList[i].varName, imageList[i].theFile);
+		if (imageList[i].trackType !== undefined) {
+			//track tiles
+			loadImageForTrackCode(imageList[i].trackType, imageList[i].theFile)
+		} else {
+			//car pic
+			beginLoadingImages(imageList[i].varName, imageList[i].theFile);
+		}
 	}
 }
 
 function loadingDoneSoStartGame() {
-	if (imagesToLoad == 0) {
+	if (picsToLoad == 0) {
 		var framesPerSec = 30;
 		setInterval( function() {
 			moveEverything();
