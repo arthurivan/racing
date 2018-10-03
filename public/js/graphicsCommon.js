@@ -2,7 +2,7 @@ function drawBitmapCenteredWithRotation(graphic, atX, atY, width,height, withAng
 	cx.save();
 	cx.translate(atX, atY);
 	cx.rotate(withAngle);
-	cx.drawImage(graphic, -(width/2), -(height/2), carW, carH);
+	cx.drawImage(graphic, -(width/2), -(height/2), width,height);
 	cx.restore();
 	
 }

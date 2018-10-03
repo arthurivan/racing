@@ -1,14 +1,16 @@
 var canvas, cx;
 //setup
+var p1 = new carClass();
+
 function moveEverything() {
-	carMove();
+	p1.carMove();
 }
 
 function drawEverything() {
 	//Tracks
 	drawTracks();
 	//car
-	carDraw();
+	p1.carDraw();
 
 }
 
@@ -17,7 +19,7 @@ window.onload = function() {
 	cx = canvas.getContext('2d');
 
 	initInput();
-	initCar();
+	p1.initCar();
 	loadImages();
 
 }
