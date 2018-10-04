@@ -14,6 +14,7 @@ function initInput() {
 	document.addEventListener('keydown',keyPressed);
 	document.addEventListener('keyup', keyReleased);
     p1.setupControls(KEY_LEFT_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW);
+    p2.setupControls(KEY_LEFT_A, KEY_UP_W, KEY_RIGHT_D, KEY_DOWN_S);
 }
 
 function setKeyHoldState(thisKey, thisCar, setTo) {
@@ -42,9 +43,13 @@ function setKeyHoldState(thisKey, thisCar, setTo) {
 function keyPressed(evt) {
 	evt.preventDefault;
 	setKeyHoldState(evt.keyCode, p1, true);
+    setKeyHoldState(evt.keyCode, p2, true);
+
 }
 
 function keyReleased(evt) {
 	evt.preventDefault;
 	setKeyHoldState(evt.keyCode, p1, false);
+    setKeyHoldState(evt.keyCode, p2, false);
+
 }

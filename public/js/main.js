@@ -1,9 +1,11 @@
 var canvas, cx;
 //setup
-var p1 = new carClass();
+var p1 = new carClass(carPic);
+var p2 = new carClass(carPic2);
 
 function moveEverything() {
 	p1.carMove();
+	p2.carMove();
 }
 
 function drawEverything() {
@@ -11,6 +13,7 @@ function drawEverything() {
 	drawTracks();
 	//car
 	p1.carDraw();
+	p2.carDraw();
 
 }
 
@@ -20,6 +23,7 @@ window.onload = function() {
 
 	initInput();
 	p1.initCar();
+	p2.initCar();
 	loadImages();
 
 }
