@@ -51,7 +51,13 @@ function carClass(carPic) {
 			this.carX = nextX;
 			this.carY = nextY;
 		} else if (drivingIntoTileType == TRACK_FINISHLINE) {
-			document.getElementById('debugText').innerHTML = /([a-z,A-Z-]*)\.[a-z]*$/.exec(this.carPic.src)[1] + " hit the goal line";
+			document.getElementById('debugText').innerHTML =
+			  /([a-z,A-Z-]*)\.[a-z]*$/.exec(this.carPic.src)[1] +
+				" hit the goal line";
+			p1.initCar();
+			p2.initCar();
+			p1.carSpeed = 0;
+			p2.carSpeed = 0;
 		} else {
 			this.carSpeed *= -0.5;
 		}
@@ -67,16 +73,19 @@ function carClass(carPic) {
 
 	this.initCar = function() {
 		//search for location in grid
-		for (var i = 0; i < trackGrid.length; i++) {
-			if (trackGrid[i] == TRACK_PLAYERSTART) {
-					trackGrid[i] = 0;
-					this.carX = (i % TRACK_COLS) * TRACK_W + TRACK_W/2;
-					this.carY = Math.floor(i / TRACK_COLS) * TRACK_H + TRACK_H/2;
-					break;
-				}
+		if (this.homeX == undefined) {
+			for (var i = 0; i < trackGrid.length; i++) {
+				if (trackGrid[i] == TRACK_PLAYERSTART) {
+						trackGrid[i] = 0;
+						this.homeX = (i % TRACK_COLS) * TRACK_W + TRACK_W/2;
+						this.homeY = Math.floor(i / TRACK_COLS) * TRACK_H + TRACK_H/2;
+						break;
+					}
+			}
 		}
+						this.carX = this.homeX;
+						this.carY = this.homeY;
 	}
-
 
 	this.carDraw = function() {
 
