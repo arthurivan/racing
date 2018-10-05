@@ -22,8 +22,8 @@ window.onload = function() {
 	cx = canvas.getContext('2d');
 
 	initInput();
-	p1.initCar();
 	p2.initCar();
+	p1.initCar();
 	loadImages();
 
 }

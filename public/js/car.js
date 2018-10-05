@@ -46,9 +46,13 @@ function carClass(carPic) {
 		var nextX = this.carX + Math.cos(this.carAng) * this.carSpeed;
 		var nextY = this.carY + Math.sin(this.carAng) * this.carSpeed;
 		
-		if (checkForTrackAtPixelCoord(nextX, nextY)) {
+		var drivingIntoTileType = getTrackAtPixelCoord(nextX,nextY);
+
+		if (drivingIntoTileType == TRACK_ROAD) {
 			this.carX = nextX;
 			this.carY = nextY;
+		} else if (drivingIntoTileType == TRACK_FINISHLINE) {
+			document.getElementById('debugText').innerHTML = "somone hit the goal line";
 		} else {
 			this.carSpeed *= -0.5;
 		}

@@ -20,7 +20,7 @@ var trackGrid = [ 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
 			            1, 0, 0, 1, 1, 0, 0, 1, 1, 3, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
 			            1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
 			            1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-			            1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+			            1, 0, 5, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
 			            1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
 			            1, 2, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
 			            1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
@@ -33,12 +33,12 @@ function trackTileToIndex(tileCol, tileRow) {
 	return tileCol + tileRow*TRACK_COLS;
 }
 
-function checkForTrackAtPixelCoord(carX,carY) {
+function getTrackAtPixelCoord(carX,carY) {
 	var trackTileCol = Math.floor(carX/TRACK_W);
 	var trackTileRow = Math.floor(carY/TRACK_H);
 
 	var trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
-	return (trackGrid[trackIndex] == TRACK_ROAD);
+	return trackGrid[trackIndex];
 }
 
 function drawTracks() {
