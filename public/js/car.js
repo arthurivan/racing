@@ -14,7 +14,6 @@ function carClass(carPic) {
 	this.carAng = -Math.PI/2;
 	//pic
 	this.carPic = carPic;
-
 	//control states
 	this.keyLeft = false;
 	this.keyUp = false;
@@ -52,7 +51,7 @@ function carClass(carPic) {
 			this.carX = nextX;
 			this.carY = nextY;
 		} else if (drivingIntoTileType == TRACK_FINISHLINE) {
-			document.getElementById('debugText').innerHTML = "somone hit the goal line";
+			document.getElementById('debugText').innerHTML = /([a-z,A-Z-]*)\.[a-z]*$/.exec(this.carPic.src)[1] + " hit the goal line";
 		} else {
 			this.carSpeed *= -0.5;
 		}
