@@ -5,13 +5,9 @@ const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 
 function carClass(carPic) {
-	//track car position
-	this.carX = 400;
-	this.carY = 300;
+	//car size
 	this.carW = 30;
 	this.carH = 25;
-	this.carSpeed = 0;
-	this.carAng = -Math.PI/2;
 	//pic
 	this.carPic = carPic;
 	//control states
@@ -19,7 +15,7 @@ function carClass(carPic) {
 	this.keyUp = false;
 	this.keyRight = false;
 	this.keyDown = false;
-
+	//checks every turn to see key states
 	this.carMove = function() {
 		if (this.keyLeft) {
 			if (this.carSpeed > MIN_TURN_SPEED ||
@@ -29,9 +25,6 @@ function carClass(carPic) {
 		}
 		if (this.keyUp) {
 				this.carSpeed += DRIVE_POWER;
-			if (this.carSpeed < 3) {
-				
-			}
 		}
 		if (this.keyRight) {
 			if (this.carSpeed > MIN_TURN_SPEED ||
@@ -42,6 +35,7 @@ function carClass(carPic) {
 		if (this.keyDown) {
 			this.carSpeed -= REVERSE_POWER;
 		}
+		//checks possible future position for road or finishline
 		var nextX = this.carX + Math.cos(this.carAng) * this.carSpeed;
 		var nextY = this.carY + Math.sin(this.carAng) * this.carSpeed;
 		
@@ -56,12 +50,11 @@ function carClass(carPic) {
 				" hit the goal line";
 			p1.initCar();
 			p2.initCar();
-			p1.carSpeed = 0;
-			p2.carSpeed = 0;
 		} else {
 			this.carSpeed *= -0.5;
 		}
 		this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+		console.log(this.carSpeed);
 	}
 
 	this.setupControls = function(leftKey, upKey, rightKey, downKey) {
@@ -85,6 +78,8 @@ function carClass(carPic) {
 		}
 						this.carX = this.homeX;
 						this.carY = this.homeY;
+						this.carSpeed = 0;
+						this.carAng = -0.5 * Math.PI;
 	}
 
 	this.carDraw = function() {
